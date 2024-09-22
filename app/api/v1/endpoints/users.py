@@ -17,7 +17,10 @@ router = APIRouter()
 class User(BaseModel):
     username: str
     password: str
-
+    name: str
+    fullname: str
+    id: str
+    id_number: str
 
 class Password(BaseModel):
     password: str
@@ -62,7 +65,12 @@ def create_user(user: User):
         if CRUDUsers.user_already_exist(user.username):
             raise Exception("Username Already Exist")
         CRUDUsers.create_object(username=user.username,
-                                password=hashed_pass)
+                                password=hashed_pass,
+                                name= user.name,
+                                fullname=user.fullname,
+                                id=user.id,
+                                id_number=user.id_number
+                                )
         return FastApiResponse.successful
     except Exception as e:
         print(f"Error: {e}", traceback.format_exc())

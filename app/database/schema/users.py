@@ -6,6 +6,10 @@ from app.core.config import settings
 class Users(Document):
     username = StringField(required=True)
     password = StringField(required=True)
+    name =StringField(required=True)
+    fullname = StringField(required=True)
+    id =  StringField(required=True)
+    id_number = StringField(required=True)
     status = StringField(required=True, default="active")
     createdBy = StringField(required=True)
     modifiedBy = StringField(required=True)

@@ -8,15 +8,26 @@ DOGO_ONSEN_VAR = "DOGO-ONSEN"
 
 class CRUDUsers:
     @staticmethod
-    def create_object(username, password,
+    def create_object(username, 
+                      password,
+                      name,
+                      fullname,
+                      id,
+                      id_number,
                       status="active",
                       created_by=DOGO_ONSEN_VAR,
                       modified_by=DOGO_ONSEN_VAR,
                       created_date=datetime.datetime.now,
-                      modified_date=datetime.datetime.now):
+                      modified_date=datetime.datetime.now,
+
+                      ):
         h = Users(
             username=username,
             password=password,
+            name=name,
+            fullname=fullname,
+            id=id,
+            id_number=id_number,
             status=status,
             createdBy=created_by,
             modifiedBy=modified_by,
