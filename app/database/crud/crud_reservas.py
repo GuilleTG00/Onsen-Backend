@@ -10,6 +10,7 @@ class CRUDReservas:
         fechaDeCheckIn = '01-01-2024',
         fechaDeCheckOut = '01-01-2024',
         estado = 'activo',
+        calificacion="0",
         userId = 't01'
         ):
         h = Reservas(
@@ -19,51 +20,13 @@ class CRUDReservas:
             fechaDeCheckIn = fechaDeCheckIn,
             fechaDeCheckOut = fechaDeCheckOut,
             estado = estado,
+            calificacion=calificacion,
             userId = userId
         ).save()
 
         data = Reservas.objects.filter(estado='activo')
         data = list(map(lambda transaction: transaction.to_mongo(), data))
         return data
-        
-    @staticmethod
-    def get_reservas():
-        try:
-            new_reserva = Reservas.objects.filter(estado='activo')
-
-            return new_reserva
-
-        except Exception as e:
-            raise e
-
-
-    @staticmethod
-    def update_turn_by_id(raw_id=123, payload={}):
-        try:
-            if not payload:
-                return
-            
-            updator = {}
-            for key in payload:
-                updator[f"set__{key}"] = payload[key]
-
-            Reservas.objects(rawId=raw_id).update(**updator)
-        except Exception as e:
-            raise e
-        
-
-    @staticmethod
-    def get_by_turn(turn):
-        try:
-            data = Reservas.objects.filter(turnNumber=turn, fechaAtencion=None).limit(1)
-            data = list(map(lambda transaction: transaction.to_mongo(), data))
-            if len(data) > 0:
-                return data[0]
-
-            return None
-        except Exception as e:
-            raise e
-
     
     @staticmethod
     def get_by_id(raw_id):
@@ -76,20 +39,23 @@ class CRUDReservas:
             return None
         except Exception as e:
             raise e
-
     
     @staticmethod
-    def get_items(atendidos="false"):
+    def get_reservas_by_state(estado="activo"):
         try:
-            filters = {}
-            if atendidos.lower() == "false":
-                filters["fechaAtencion"] = None
-            else:
-                filters["fechaAtencion__ne"] = None
-
-            data = Reservas.objects.filter(**filters).order_by("+turnNumber")
+            data = Reservas.objects.filter(estado=estado).order_by("+fechaDeReserva")
             return list(map(lambda transaction: transaction.to_mongo(), data))
         except Exception as e:
             raise e
+        
+    @staticmethod
+    def get_reservas_by_state_last_check_in(estado="activo"):
+        try:
+            data = Reservas.objects.filter(estado=estado).order_by("+fechaDeCheckIn")
+            return list(map(lambda transaction: transaction.to_mongo(), data))
+        except Exception as e:
+            raise e
+
+
 
 
