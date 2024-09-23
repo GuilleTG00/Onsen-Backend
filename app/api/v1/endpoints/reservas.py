@@ -47,7 +47,7 @@ def crear_reserva(reserva: Reserva, current_user=Depends(get_current_user)):
 
 
 @router.get('/get-last-reserva')
-def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_user)):
+def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
     try:
         list_of_fields = [
             "fechaDeReserva",

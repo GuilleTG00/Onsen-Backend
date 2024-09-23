@@ -17,7 +17,7 @@ class Elemento_Inventario(BaseModel):
     cantidad: int
 
 @router.post('/crear-elemento-inventario')
-def crear_reserva(elemento_inventario: Elemento_Inventario, current_user=Depends(get_current_user)):
+def crear_elemento_inventario(elemento_inventario: Elemento_Inventario, current_user=Depends(get_current_user)):
 
     try:
         user_id = current_user.get("user_id")
@@ -34,7 +34,7 @@ def crear_reserva(elemento_inventario: Elemento_Inventario, current_user=Depends
         return FastApiResponse.failure(str(e))
 
 @router.post('/actualizar-elemento-inventario')
-def cambiar_estado(nombreProducto, cantidad, current_user=Depends(get_current_user)):
+def actualizar_elemento_inventario(nombreProducto, cantidad, current_user=Depends(get_current_user)):
     try:
         CRUDInventario.update_inventario_cantidad(nombreProducto, cantidad)
 
@@ -46,7 +46,7 @@ def cambiar_estado(nombreProducto, cantidad, current_user=Depends(get_current_us
     
 
 @router.get('/get-listado-inventario')
-def get_reservas_por_estado(current_user=Depends(get_current_user)):
+def get_listado_inventario(current_user=Depends(get_current_user)):
     try:
         list_of_fields = [
             "nombreProducto", 
