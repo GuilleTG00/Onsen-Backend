@@ -91,7 +91,7 @@ def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_us
             "userId"
         ]
         new_items = []
-        result = CRUDReservas.get_items_by_state(estado=estado)
+        result = CRUDReservas.get_reservas_by_state(estado=estado)
         for obt in result:
             item = {}
             item["id"] = obt.get("rawId")

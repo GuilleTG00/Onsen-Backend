@@ -19,7 +19,7 @@ class User(BaseModel):
     password: str
     name: str
     fullname: str
-    id: str
+    id_type: str
     id_number: str
 
 class Password(BaseModel):
@@ -66,9 +66,9 @@ def create_user(user: User):
             raise Exception("Username Already Exist")
         CRUDUsers.create_object(username=user.username,
                                 password=hashed_pass,
-                                name= user.name,
+                                name = user.name,
                                 fullname=user.fullname,
-                                id=user.id,
+                                id_type=user.id_type,
                                 id_number=user.id_number
                                 )
         return FastApiResponse.successful
