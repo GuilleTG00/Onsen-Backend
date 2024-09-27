@@ -24,7 +24,6 @@ class Habitacion(BaseModel):
 
 @router.post('/crear-habitacion')
 def crear_habitacion(habitacion: Habitacion, current_user=Depends(get_current_user)):
-
     try:
         user_id = current_user.get("user_id")
         id_generated = int(time.time() * 1000)
@@ -36,7 +35,7 @@ def crear_habitacion(habitacion: Habitacion, current_user=Depends(get_current_us
             precioDia = habitacion.precioDia,
             details = habitacion.details,
             extraServices = habitacion.extraServices,
-            images = habitacion.title
+            images = habitacion.images
     )
 
         return { "id": id_generated }
@@ -63,9 +62,9 @@ def get_listado_habitaciones(current_user=Depends(get_current_user)):
         result = CRUDHabitaciones.get_all_habitaciones()
         for obt in result:
             item = {}
-            item["id"] = obt.get("rawId")
+            item["id"] = str(obt.id)
             for field in list_of_fields:
-                item[field] = obt.get(field)
+                item[field] = getattr(obt, field, None)
             
             new_items.append(item)
 

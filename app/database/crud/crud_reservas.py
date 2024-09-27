@@ -5,23 +5,27 @@ class CRUDReservas:
     @staticmethod
     def create_object(
         fechaDeReserva = '01-01-2024',
-        nombreHabitacion = '""',
-        tipoHabitacion = '"',
+        habitacionData = {},
+        habitacionId = '',
         fechaDeCheckIn = '01-01-2024',
         fechaDeCheckOut = '01-01-2024',
         estado = 'activo',
         calificacion="0",
-        userId = 't01'
+        total = 0,
+        serviciosEspeciales = [],
+        acompañantes = 0,
         ):
         h = Reservas(
             fechaDeReserva = fechaDeReserva,
-            nombreHabitacion = nombreHabitacion,
-            tipoHabitacion = tipoHabitacion,
+            habitacionData = habitacionData,
+            habitacionId = habitacionId,
             fechaDeCheckIn = fechaDeCheckIn,
             fechaDeCheckOut = fechaDeCheckOut,
             estado = estado,
-            calificacion=calificacion,
-            userId = userId
+            calificacion = calificacion,
+            total = total,
+            serviciosEspeciales = serviciosEspeciales,
+            acompañantes = acompañantes,
         ).save()
 
         data = Reservas.objects.filter(estado='activo')
@@ -52,7 +56,7 @@ class CRUDReservas:
     def get_reservas_by_state_last_check_in(estado="activo"):
         try:
             data = Reservas.objects.filter(estado=estado).order_by("+fechaDeCheckIn")
-            return list(map(lambda transaction: transaction.to_mongo(), data))
+            return data
         except Exception as e:
             raise e
 

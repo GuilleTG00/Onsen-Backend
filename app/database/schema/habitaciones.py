@@ -8,7 +8,7 @@ class Habitaciones(Document):
     subtitle = StringField(required=False)
     roomDescription = StringField(required=False)
     camas = StringField(required=False)
-    predcioDia = IntField(required=False)
+    precioDia = IntField(required=False)
     details = ListField(required=False)
     extraServices =ListField(required=False)
     images = ListField(required=False)

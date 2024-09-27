@@ -8,7 +8,7 @@ class CRUDHabitaciones:
     subtitle = '',
     roomDescription = '',
     camas = '',
-    predcioDia = 1,
+    precioDia = 1,
     details = [],
     extraServices = [],
     images = []
@@ -18,7 +18,7 @@ class CRUDHabitaciones:
             subtitle = subtitle,
             roomDescription = roomDescription,
             camas = camas,
-            predcioDia = predcioDia,
+            precioDia = precioDia,
             details = details,
             extraServices = extraServices,
             images = images

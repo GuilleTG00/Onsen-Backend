@@ -9,18 +9,19 @@ from app.api.v1.global_import import FastApiResponse
 from pydantic import BaseModel
 from typing import Optional
 
-
 router = APIRouter()
-
 
 class Reserva(BaseModel):
     fechaDeReserva: str
-    nombreHabitacion:  str
-    tipoHabitacion: str
+    habitacionData: dict
+    habitacionId: str
     fechaDeCheckIn: str
     fechaDeCheckOut: str
     estado: str
-    calificacion: str
+    total: int
+    serviciosEspeciales: list
+    calificacion: Optional[int] 
+    acompañantes: int
 
 @router.post('/crear-reserva')
 def crear_reserva(reserva: Reserva, current_user=Depends(get_current_user)):
@@ -28,15 +29,17 @@ def crear_reserva(reserva: Reserva, current_user=Depends(get_current_user)):
     try:
         user_id = current_user.get("user_id")
         id_generated = int(time.time() * 1000)
-        real_turn = CRUDReservas.create_object( 
+        CRUDReservas.create_object( 
             fechaDeReserva = reserva.fechaDeReserva,
-            nombreHabitacion = reserva.nombreHabitacion,
-            tipoHabitacion = reserva.tipoHabitacion,
             fechaDeCheckIn = reserva.fechaDeCheckIn,
             fechaDeCheckOut = reserva.fechaDeCheckOut,
             estado = reserva.estado,
             calificacion=reserva.calificacion,
-            user_id = user_id
+            total = reserva.total,
+            serviciosEspeciales = reserva.serviciosEspeciales,
+            acompañantes=reserva.acompañantes,
+            habitacionData=reserva.habitacionData,
+            habitacionId=reserva.habitacionId,
     )
 
         return { "id": id_generated }
@@ -51,21 +54,23 @@ def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
     try:
         list_of_fields = [
             "fechaDeReserva",
-            "nombreHabitacion",
-            "tipoHabitacion",
             "fechaDeCheckIn",
             "fechaDeCheckOut",
             "estado",
             "calificacion",
-            "userId"
+            "total",
+            "serviciosEspeciales",
+            "acompañantes",
+            "habitacionData",
+            "habitacionId"
         ]
         new_items = []
         result = CRUDReservas.get_reservas_by_state_last_check_in(estado=estado)
         for obt in result:
             item = {}
-            item["id"] = obt.get("rawId")
+            item["id"] = str(obt.id)
             for field in list_of_fields:
-                item[field] = obt.get(field)
+                item[field] = getattr(obt, field, None)
             
             new_items.append(item)
 
