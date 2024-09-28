@@ -48,7 +48,7 @@ class CRUDReservas:
     def get_reservas_by_state(estado="activo"):
         try:
             data = Reservas.objects.filter(estado=estado).order_by("+fechaDeReserva")
-            return list(map(lambda transaction: transaction.to_mongo(), data))
+            return data
         except Exception as e:
             raise e
         

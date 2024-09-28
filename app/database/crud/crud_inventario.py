@@ -6,10 +6,16 @@ class CRUDInventario:
     def create_object(
         nombreProducto = '',
         cantidad = 1,
+        image = '',
+        inventario = True,
+        precio = 1
         ):
         h = Inventario(
             nombreProducto = nombreProducto,
             cantidad = cantidad,
+            image = image,
+            inventario = inventario,
+            precio = precio
         ).save()
 
         data = Inventario.objects.filter()
@@ -28,10 +34,11 @@ class CRUDInventario:
 
 
     @staticmethod
-    def update_inventario_cantidad(nombreProducto='', cantidad=1):
+    def update_inventario_cantidad(nombreProducto='', cantidad=1, id = ''):
         try:
-            return Inventario.objects.filter(nombreProducto=nombreProducto).update_one(
-                set__cantidad = cantidad
+            return Inventario.objects.filter(id=id).update_one(
+                set__cantidad = cantidad,
+                set__nombreProducto = nombreProducto
                 )
         except Exception as e:
             raise e

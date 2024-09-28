@@ -87,21 +87,23 @@ def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_us
     try:
         list_of_fields = [
             "fechaDeReserva",
-            "nombreHabitacion",
-            "tipoHabitacion",
             "fechaDeCheckIn",
             "fechaDeCheckOut",
             "estado",
             "calificacion",
-            "userId"
+            "total",
+            "serviciosEspeciales",
+            "acompañantes",
+            "habitacionData",
+            "habitacionId"
         ]
         new_items = []
         result = CRUDReservas.get_reservas_by_state(estado=estado)
         for obt in result:
             item = {}
-            item["id"] = obt.get("rawId")
+            item["id"] = str(obt.id)
             for field in list_of_fields:
-                item[field] = obt.get(field)
+                item[field] = getattr(obt, field, None)
             
             new_items.append(item)
 

@@ -15,6 +15,9 @@ router = APIRouter()
 class Elemento_Inventario(BaseModel):
     nombreProducto: str
     cantidad: int
+    image: str
+    inventario: bool
+    precio: int
 
 @router.post('/crear-elemento-inventario')
 def crear_elemento_inventario(elemento_inventario: Elemento_Inventario, current_user=Depends(get_current_user)):
@@ -25,6 +28,9 @@ def crear_elemento_inventario(elemento_inventario: Elemento_Inventario, current_
         real_turn = CRUDInventario.create_object( 
             nombreProducto = elemento_inventario.nombreProducto,
             cantidad = elemento_inventario.cantidad,
+            image = elemento_inventario.image,
+            inventario = elemento_inventario.inventario,
+            precio = elemento_inventario.precio
     )
 
         return { "id": id_generated }
@@ -33,10 +39,10 @@ def crear_elemento_inventario(elemento_inventario: Elemento_Inventario, current_
         print(f"Error: {e}", traceback.format_exc())
         return FastApiResponse.failure(str(e))
 
-@router.post('/actualizar-elemento-inventario')
-def actualizar_elemento_inventario(nombreProducto, cantidad, current_user=Depends(get_current_user)):
+@router.post('/actualizar-elemento-inventario-by-id')
+def actualizar_elemento_inventario(nombreProducto, cantidad, id, current_user=Depends(get_current_user)):
     try:
-        CRUDInventario.update_inventario_cantidad(nombreProducto, cantidad)
+        CRUDInventario.update_inventario_cantidad(nombreProducto, cantidad, id)
 
         return FastApiResponse.successful
 
@@ -50,15 +56,18 @@ def get_listado_inventario(current_user=Depends(get_current_user)):
     try:
         list_of_fields = [
             "nombreProducto", 
-            "cantidad" 
+            "cantidad" ,
+            "inventario",
+            "image",
+            "precio"
         ]
         new_items = []
         result = CRUDInventario.get_all_inventario()
         for obt in result:
             item = {}
-            item["id"] = obt.get("rawId")
+            item["id"] = str(obt.id)
             for field in list_of_fields:
-                item[field] = obt.get(field)
+                item[field] = getattr(obt, field, None)
             
             new_items.append(item)
 
