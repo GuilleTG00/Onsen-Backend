@@ -55,8 +55,8 @@ class CRUDReservas:
     @staticmethod
     def get_reservas_by_state_last_check_in(estado="activo"):
         try:
-            data = Reservas.objects.filter(estado=estado).order_by("+fechaDeCheckIn")
-            return data
+            data = Reservas.objects.filter(estado=estado).order_by("-fechaDeCheckIn").first()
+            return [data]
         except Exception as e:
             raise e
 
