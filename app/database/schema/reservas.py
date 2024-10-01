@@ -11,6 +11,7 @@ class Reservas(Document):
     calificacion = StringField(required=False)
     userId = StringField(required=False)
     total = IntField(required=False)
+    userId = StringField(required = False)
     serviciosEspeciales = ListField(required=False) 
     acompañantes = IntField(required=False)
 

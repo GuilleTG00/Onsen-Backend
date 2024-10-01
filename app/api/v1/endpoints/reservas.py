@@ -40,6 +40,7 @@ def crear_reserva(reserva: Reserva, current_user=Depends(get_current_user)):
             acompañantes=reserva.acompañantes,
             habitacionData=reserva.habitacionData,
             habitacionId=reserva.habitacionId,
+            userId=user_id
     )
 
         return { "id": id_generated }
@@ -52,6 +53,7 @@ def crear_reserva(reserva: Reserva, current_user=Depends(get_current_user)):
 @router.get('/get-last-reserva')
 def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
     try:
+        user_id = current_user.get("user_id")
         list_of_fields = [
             "fechaDeReserva",
             "fechaDeCheckIn",
@@ -62,10 +64,11 @@ def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
             "serviciosEspeciales",
             "acompañantes",
             "habitacionData",
-            "habitacionId"
+            "habitacionId",
+            "userId"
         ]
         new_items = []
-        result = CRUDReservas.get_reservas_by_state_last_check_in(estado=estado)
+        result = CRUDReservas.get_reservas_by_state_last_check_in(estado=estado, userId=user_id)
         for obt in result:
             item = {}
             item["id"] = str(obt.id)
@@ -85,6 +88,8 @@ def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
 @router.get('/get-reservas-por-estado')
 def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_user)):
     try:
+        user_id = current_user.get("user_id")
+        print(user_id)
         list_of_fields = [
             "fechaDeReserva",
             "fechaDeCheckIn",
@@ -98,7 +103,7 @@ def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_us
             "habitacionId"
         ]
         new_items = []
-        result = CRUDReservas.get_reservas_by_state(estado=estado)
+        result = CRUDReservas.get_reservas_by_state(estado=estado, userId=user_id)
         for obt in result:
             item = {}
             item["id"] = str(obt.id)

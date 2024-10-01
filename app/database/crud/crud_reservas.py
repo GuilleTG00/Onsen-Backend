@@ -11,6 +11,7 @@ class CRUDReservas:
         fechaDeCheckOut = '01-01-2024',
         estado = 'activo',
         calificacion="0",
+        userId = '',
         total = 0,
         serviciosEspeciales = [],
         acompañantes = 0,
@@ -22,6 +23,7 @@ class CRUDReservas:
             fechaDeCheckIn = fechaDeCheckIn,
             fechaDeCheckOut = fechaDeCheckOut,
             estado = estado,
+            userId = userId,
             calificacion = calificacion,
             total = total,
             serviciosEspeciales = serviciosEspeciales,
@@ -45,17 +47,17 @@ class CRUDReservas:
             raise e
     
     @staticmethod
-    def get_reservas_by_state(estado="activo"):
+    def get_reservas_by_state(estado="activo", userId= ""):
         try:
-            data = Reservas.objects.filter(estado=estado).order_by("+fechaDeReserva")
+            data = Reservas.objects.filter(estado=estado, userId=userId).order_by("+fechaDeReserva")
             return data
         except Exception as e:
             raise e
         
     @staticmethod
-    def get_reservas_by_state_last_check_in(estado="activo"):
+    def get_reservas_by_state_last_check_in(estado="activo", userId =""):
         try:
-            data = Reservas.objects.filter(estado=estado).order_by("-fechaDeCheckIn").first()
+            data = Reservas.objects.filter(estado=estado, userId=userId).order_by("-fechaDeCheckIn").first()
             return [data]
         except Exception as e:
             raise e
