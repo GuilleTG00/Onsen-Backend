@@ -89,7 +89,6 @@ def get_last_reserva(estado="activo", current_user=Depends(get_current_user)):
 def get_reservas_por_estado(estado="activo", current_user=Depends(get_current_user)):
     try:
         user_id = current_user.get("user_id")
-        print(user_id)
         list_of_fields = [
             "fechaDeReserva",
             "fechaDeCheckIn",
